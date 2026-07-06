@@ -11,11 +11,26 @@ endif()
 
 project ("Mizu Engine Version 1.0.0")
 
-if (POLICY CMP0071)
+if (POLICY CMP0072)
 	cmake_policy(SET CMP0072 NEW)
 endif()
 
 find_package(OpenGL REQUIRED)
+add_subdirectory(dependencies/glfw)
 
-# Include sub-projects.
-add_subdirectory ("Mizu Engine")
+add_executable(cmake_test
+	"Mizu Engine/main.cpp"
+	"dependencies/glad/src/glad.c"
+)
+
+target_include_directories(cmake_test PRIVATE 
+	"Mizu Engine"
+	"dependencies/glad/include"
+	"dependencies/glfw/include"
+	"dependencies/glm"
+)
+
+target_link_libraries(cmake_test
+	glfw
+	OpenGL::GL
+)
