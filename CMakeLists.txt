@@ -16,6 +16,14 @@ if (POLICY CMP0071)
 endif()
 
 find_package(OpenGL REQUIRED)
+find_package(glfw3 REQUIRED)
+
+add_executable)cmake_test
+	Mizu Engine/main.cpp
+	dependencies/glad/src/glad.c
+)
+
+target_include_directories(cmake_test PRIVATE dependencies)
 
 # Include sub-projects.
 add_subdirectory ("Mizu Engine")
