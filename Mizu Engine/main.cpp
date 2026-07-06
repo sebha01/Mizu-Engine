@@ -18,7 +18,13 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	//Create window and set context
-	window = glfwCreateWindow(640, 480, "Mizu Engine v1.0", NULL, NULL);
+
+	//initalise window mode and monitor
+	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+	window = glfwCreateWindow(mode->width * 0.66, mode->height * 0.66, "Mizu Engine v1.0.0", NULL, NULL);
+	//glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
 	glfwMakeContextCurrent(window);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -28,7 +34,7 @@ int main()
 		return -1;
 	}
 
-	glClearColor(0.25f, 0.5f, 0.75f, 1.0f);
+	glClearColor(0.08f, 0.12f, 0.35f, 1.0f);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -36,7 +42,7 @@ int main()
 
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glSwapBuffers(window);
+		glfwSwapBuffers(window);
 	}
 
 	glfwTerminate();
