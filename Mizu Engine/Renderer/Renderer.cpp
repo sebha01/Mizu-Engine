@@ -91,3 +91,18 @@ void Renderer::delete2DTriangleVariables()
 	glDeleteBuffers(1, &VBO);
 	glDeleteProgram(shaderProgram);
 }
+
+void Renderer::setUpIndexBuffer2DTriangle()
+{
+
+}
+
+void Renderer::drawIndexBuffer2DTriangle()
+{
+
+}
+
+void Renderer::deleteIndexBuffer2DTriangleVariables()
+{
+
+}
