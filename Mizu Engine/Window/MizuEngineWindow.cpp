@@ -38,13 +38,14 @@ void MizuEngineWindow::WindowInit()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	//Create window and set context
-
-	//initalise window mode and monitor
-	monitor = glfwGetPrimaryMonitor();
-	mode = glfwGetVideoMode(monitor);
-
-	window = glfwCreateWindow(mode->width * 0.66, mode->height * 0.66, "Mizu Engine v1.0.0", NULL, NULL);
 	
+	//initalise window mode and monitor
+	//monitor = glfwGetPrimaryMonitor();
+	//mode = glfwGetVideoMode(monitor);
+
+	//window = glfwCreateWindow(mode->width * 0.66, mode->height * 0.66, "Mizu Engine v1.0.0", NULL, NULL);
+	window = glfwCreateWindow(defaultWindowWidth, defaultWindowHeight, "Mizu Engine v1.0.0", NULL, NULL);
+
 	//Register callback function 
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
@@ -62,8 +63,10 @@ void MizuEngineWindow::WindowInit()
 	glClearColor(0.08f, 0.12f, 0.35f, 1.0f);
 
 	//Set viewport
-	glViewport(0, 0, mode->width * 0.66, mode->height * 0.66);
+	//glViewport(0, 0, mode->width * 0.66, mode->height * 0.66);
+	glViewport(0, 0, defaultWindowWidth, defaultWindowHeight);
 
+	MizuEngineRenderer.setUp2DTriangle();
 }
 
 void MizuEngineWindow::WindowUpdate()
@@ -84,12 +87,12 @@ void MizuEngineWindow::WindowUpdate()
 		//check and call events and swap buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
-		glClear(GL_COLOR_BUFFER_BIT);
 	}
 }
 
 void MizuEngineWindow::WindowTerminate()
 {
+	MizuEngineRenderer.delete2DTriangleVariables();
+
 	glfwTerminate();
 }
