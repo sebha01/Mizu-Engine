@@ -31,19 +31,11 @@ class Renderer
 		GLuint VAO = 0;
 		GLuint VBO = 0;
 		GLuint EBO = 0;
-		//Vertex and fragment shader objects
-		GLuint vertexShader = 0;
-		GLuint fragmentShader = 0;
-		//Shader program object
-		GLuint shaderProgram = 0;
 
 public:
 	//Constructor and Destructor
 	Renderer();
 	~Renderer();
-
-	//Shader functions
-	void setUpShaderProgram();
 
 	//2D
 

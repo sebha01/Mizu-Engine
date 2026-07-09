@@ -21,7 +21,7 @@ add_subdirectory(dependencies/glfw)
 add_executable(cmake_test
 	"Mizu Engine/main.cpp"
 	"dependencies/glad/src/glad.c"
- "Mizu Engine/Window/MizuEngineWindow.h" "Mizu Engine/Window/MizuEngineWindow.cpp" "Mizu Engine/Renderer/Renderer.h" "Mizu Engine/Renderer/Renderer.cpp"  "Mizu Engine/Renderer/Colours.h" "Mizu Engine/Renderer/ShaderCLass.h")
+ "Mizu Engine/Window/MizuEngineWindow.h" "Mizu Engine/Window/MizuEngineWindow.cpp" "Mizu Engine/Renderer/Renderer.h" "Mizu Engine/Renderer/Renderer.cpp"  "Mizu Engine/Renderer/Colours.h" "Mizu Engine/Renderer/ShaderClass/ShaderClass.h" "Mizu Engine/Renderer/ShaderClass/ShaderClass.cpp")
 
 target_include_directories(cmake_test PRIVATE 
 	"Mizu Engine"

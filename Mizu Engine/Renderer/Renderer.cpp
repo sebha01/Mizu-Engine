@@ -1,48 +1,11 @@
 #include "Renderer.h"
 
-//Fragment shader source code
-const char* fragmentShaderSource = "#version 330 core\n"
-	"out vec4 FragColor;\n"
-	"void main()\n"
-	"{\n"
-	"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-	"}\n\0";
-
 Renderer::Renderer()
 {
 }
 
 Renderer::~Renderer()
 {
-}
-
-void Renderer::setUpShaderProgram()
-{
-	//Create vertex shader object and get its reference
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	//Attach vertex shader source to the vertex shader object
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	//Compile the vertex shader into machine code
-	glCompileShader(vertexShader);
-
-	//Create fragment shader object and get its reference
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	//Attach fragment shader source to the vertex shader object
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	//Compile the vertex shader into machine code
-	glCompileShader(fragmentShader);
-
-	//Create shader program object and get reference
-	shaderProgram = glCreateProgram();
-	//Attach vertex and fragment shaders to the shader program object
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	//Link all shaders together into the shader program
-	glLinkProgram(shaderProgram);
-
-	//Delete the shader objects now they are not needed anymore
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
 }
 
 void Renderer::setUp2DTriangle()
