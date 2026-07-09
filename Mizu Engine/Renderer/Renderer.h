@@ -16,7 +16,7 @@ class Renderer
 		 0.5f, -0.5f, 0.0f,
 		 0.0f,  0.5f, 0.0f
 		};
-
+		//2D Indices triangle vertices
 		GLfloat IndexBuffer2DTriVerts[18] = {
 			-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower left corner
 			0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower right corner
@@ -25,6 +25,7 @@ class Renderer
 			0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner right
 			0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f // Inner down
 		};
+		//2D Triangle Indices
 		GLuint IndexBufferIndices[9] = {
 			0, 3, 5, //Lower left triangle
 			3, 2, 4, //Lower right triangle
@@ -46,10 +47,11 @@ class Renderer
 		//2D
 
 		//Triangle
+		//Normal triangle
 		void setUp2DTriangle();
 		void draw2DTriangle();
 		void delete2DTriangleVariables();
-
+		//Indices triangle
 		void setUpIndexBuffer2DTriangle();
 		void drawIndexBuffer2DTriangle();
 		void deleteIndexBuffer2DTriangleVariables();

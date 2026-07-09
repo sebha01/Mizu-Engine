@@ -4,6 +4,7 @@ EBO::EBO()
 {
 }
 
+//Constructor that genereates an EBO and linkes it to indices
 EBO::EBO(GLuint* indices, GLsizeiptr size)
 {
 	//Generate the VBO
