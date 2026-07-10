@@ -11,10 +11,10 @@ class Renderer
 {
 	private:
 		//2D Triangle vertices
-		GLfloat Triangle2DVertices[9] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f
+		GLfloat Triangle2DVertices[21] = {
+		-0.5f, -0.5f, 0.0f, blue.r, blue.g, blue.b, blue.a,
+		 0.5f, -0.5f, 0.0f, red.r, red.g, red.b, red.a,
+		 0.0f,  0.5f, 0.0f, yellow.r, yellow.g, yellow.b, yellow.a
 		};
 		//2D Indices triangle vertices
 		GLfloat IndexBuffer2DTriVerts[42] = {

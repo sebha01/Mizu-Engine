@@ -21,7 +21,8 @@ void Renderer::setUp2DTriangle()
 	VBO1 = VBO(Triangle2DVertices, sizeof(Triangle2DVertices));
 	
 	//Link the VBO to the VAO
-	VAO1.LinkVBO(VBO1, 0);
+	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)0);
+	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
 	//Unbind VAO
 	VAO1.Unbind();
 	//Unbind VBO
@@ -61,7 +62,8 @@ void Renderer::setUpIndexBuffer2DTriangle()
 	EBO1 = EBO(IndexBufferIndices, sizeof(IndexBufferIndices));
 
 	//Link VBO to VAO
-	VAO1.LinkVBO(VBO1, 0);
+	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)0);
+	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
 	//Unbond VAO
 	VAO1.Unbind();
 	//Unbind VBO
