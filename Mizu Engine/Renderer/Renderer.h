@@ -17,13 +17,13 @@ class Renderer
 		 0.0f,  0.5f, 0.0f
 		};
 		//2D Indices triangle vertices
-		GLfloat IndexBuffer2DTriVerts[18] = {
-			-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower left corner
-			0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower right corner
-			0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, // Upper corner
-			-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner left
-			0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner right
-			0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f // Inner down
+		GLfloat IndexBuffer2DTriVerts[42] = {
+			-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, blue.r, blue.g, blue.b, blue.a, // Lower left corner
+			0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, green.r, green.g, green.b, green.a, // Lower right corner
+			0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, red.r, red.g, red.b, red.a,// Upper corner
+			-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, purple.r, purple.g, purple.b, purple.a, // Inner left
+			0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, yellow.r, yellow.g, yellow.b, yellow.a,// Inner right
+			0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f , orange.r, orange.g, orange.b, orange.a// Inner down
 		};
 		//2D Triangle Indices
 		GLuint IndexBufferIndices[9] = {

@@ -2,23 +2,21 @@
 #include "Config.h"
 
 //Colour object for convenience when inputting colour variables to render shapes or objects within the scene
-class Colour
+struct Colour
 {
-	private:
-		//rgba values
-		float r;
-		float g;
-		float b;
-		float a;
-	public:
-		//Constructor
-		Colour(float red, float green, float blue, float alpha)
-		{
-			this->r = red;
-			this->g = green;
-			this->b = blue;
-			this->a = alpha;
-		}
+	//rgba values
+	GLfloat r;
+	GLfloat g;
+	GLfloat b;
+	GLfloat a;
+	//Constructor
+	Colour(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
+	{
+		this->r = red;
+		this->g = green;
+		this->b = blue;
+		this->a = alpha;
+	}
 };
 
 //Colour variables

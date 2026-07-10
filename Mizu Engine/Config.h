@@ -9,6 +9,7 @@
 #include <sstream>
 #include <cerrno>
 #include <filesystem>
+#include <array>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
