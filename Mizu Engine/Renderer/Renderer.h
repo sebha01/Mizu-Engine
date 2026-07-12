@@ -54,6 +54,9 @@ class Renderer
 
 		GLuint uniID;
 
+		const char* vertexShaderPath = "../../../Resources/Shaders/defaultShader.vert";
+		const char* fragmentShaderPath = "../../../Resources/Shaders/defaultShader.frag";
+
 	public:
 		//Constructor and Destructor
 		Renderer();

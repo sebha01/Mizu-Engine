@@ -16,7 +16,7 @@ void Renderer::setUp2DTriangle()
 	VAO1.Bind();
 
 	//Create the shader program
-	defaultShaderProgram = Shader("../../../Mizu Engine/Renderer/Shaders/defaultShader.vert", "../../../Mizu Engine/Renderer/Shaders/defaultShader.frag");
+	defaultShaderProgram = Shader(vertexShaderPath, fragmentShaderPath);
 	//Create the VBO
 	VBO1 = VBO(Triangle2DVertices, sizeof(Triangle2DVertices));
 	
@@ -60,7 +60,7 @@ void Renderer::setUpIndexBuffer2DTriangle()
 	VAO1.Bind();
 
 	//Create shader program
-	defaultShaderProgram = Shader("../../../Mizu Engine/Renderer/Shaders/defaultShader.vert", "../../../Mizu Engine/Renderer/Shaders/defaultShader.frag");
+	defaultShaderProgram = Shader(vertexShaderPath, fragmentShaderPath);
 	//Create VBO
 	VBO1 = VBO(IndexBuffer2DTriVerts, sizeof(IndexBuffer2DTriVerts));
 	//Create EBO
@@ -108,7 +108,7 @@ void Renderer::setUp2DSquare()
 	VAO1.Bind();
 
 	//Create shader program
-	defaultShaderProgram = Shader("../../../Mizu Engine/Renderer/Shaders/defaultShader.vert", "../../../Mizu Engine/Renderer/Shaders/defaultShader.frag");
+	defaultShaderProgram = Shader(vertexShaderPath, fragmentShaderPath);
 	//Create VBO
 	VBO1 = VBO(squareVertices, sizeof(squareVertices));
 	//Create EBO
