@@ -186,6 +186,9 @@ void Renderer::setUpTexturedQuad()
 		std::cout << "Texture loaded." << std::endl;
 	}
 
+	//Flip the texture because stbi reads the image in reverse compared to openGL
+	stbi_set_flip_vertically_on_load(true);
+
 	glGenTextures(1, &floorTexture);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, floorTexture);

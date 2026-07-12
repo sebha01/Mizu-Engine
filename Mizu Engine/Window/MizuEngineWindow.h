@@ -7,7 +7,8 @@ class MizuEngineWindow
 {
 	private:
 		//default window width and height
-		const int defaultWindowWidth = 1920;
+		//const int defaultWindowWidth = 1920;
+		const int defaultWindowWidth = 1080;
 		const int defaultWindowHeight = 1080;
 
 		//window, monitor and mode variables (monitor and mode more important for down the line)
