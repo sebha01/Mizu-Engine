@@ -31,6 +31,19 @@ class Renderer
 			3, 2, 4, //Lower right triangle
 			5, 4, 1 //Upper triangle
 		};
+		//2D square vertices
+		GLfloat squareVertices[28] = {
+			// COORDINATES			/		COLOURS			//
+			-0.5f, -0.5f, 0.0f,			green.r, green.g, green.b, green.a, // Lower left corner
+			-0.5f,  0.5f, 0.0f,			blue.r,	 blue.g,  blue.b,  blue.a, // Lower left corner
+			 0.5f,  0.5f, 0.0f,			red.r,   red.g,   red.b,   red.a, // Lower left corner
+			 0.5f, -0.5f, 0.0f,			white.r, white.g, white.b, white.a // Lower left corner
+		};
+		//2D square indices   
+		GLuint squareIndices[6] = {
+			0, 2, 1, //Upper triangle
+			0, 3, 2	//Lower triangle
+		};
 
 		//Shader class object
 		Shader defaultShaderProgram;
@@ -57,4 +70,8 @@ class Renderer
 		void setUpIndexBuffer2DTriangle();
 		void drawIndexBuffer2DTriangle();
 		void deleteIndexBuffer2DTriangleVariables();
+		//Square
+		void setUp2DSquare();
+		void draw2DSquare();
+		void delete2DSquare();
 };
