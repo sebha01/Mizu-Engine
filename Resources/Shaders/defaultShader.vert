@@ -9,15 +9,18 @@ layout (location = 2) in vec2 aTex;
 
 //Outputs the colour for the fragment shader
 out vec4 colour;
-
+// Outputs the texture coordinates to the fragment shader
 out vec2 texCoord;
 
+// Controls the scale of the vertices
 uniform float scale;
 
 void main()
 {
+	// Outputs the positions/coordinates of all vertices
 	gl_Position = vec4(aPos.x + aPos.x * scale, aPos.y + aPos.y * scale, aPos.z + aPos.z * scale, 1.0);
 	//Assigns the colours from the vertex data to "colour"
 	colour = aColour;
+	// Assigns the texture coordinates from the Vertex Data to "texCoord"
 	texCoord = aTex;
 }

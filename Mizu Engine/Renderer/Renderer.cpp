@@ -142,7 +142,7 @@ void Renderer::draw2DSquare()
 
 void Renderer::delete2DSquare()
 {
-	//Delete all objects created when rendering the 2D Indices triangle
+	//Delete all objects created when rendering the 2D square
 	VAO1.Delete();
 	VBO1.Delete();
 	EBO1.Delete();
@@ -173,18 +173,20 @@ void Renderer::setUpTexturedQuad()
 	//Unbind EBO
 	EBO1.Unbind();
 
+	//floor texture object
 	floorTexture = Texture("../../../Resources/Textures/AngledBlocksFloor/angled-blocks-vegetation_albedo.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-	floorTexture.texUnit(defaultShaderProgram, "tex0", 0);
 }
 
 void Renderer::drawTexturedQuad()
 {
 	//Gets ID of uniform called scale
 	uniID = glGetUniformLocation(defaultShaderProgram.ID, "scale");
-	
+	//Get uniform ID for tex0 and tell openGL which shader to use
+	floorTexture.texUnit(defaultShaderProgram, "tex0", 0);
 	//Assigns value to the uniform
 	//NOTE: Must always be done after activating the shader program
 	glUniform1f(uniID, 0.5f);
+	//Binds texture so it appears when rendered
 	floorTexture.Bind();
 	//Bind VAO so OpenGL knows to use it 
 	VAO1.Bind();
@@ -194,7 +196,7 @@ void Renderer::drawTexturedQuad()
 
 void Renderer::deleteTexturedQuad()
 {
-	//Delete all objects created when rendering the 2D Indices triangle
+	//Delete all objects created when rendering the textured quad
 	VAO1.Delete();
 	VBO1.Delete();
 	EBO1.Delete();
