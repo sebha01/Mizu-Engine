@@ -1,7 +1,7 @@
 #include "Renderer.h"
 
 Renderer::Renderer()
-{	
+{
 }
 
 Renderer::~Renderer()
@@ -173,9 +173,8 @@ void Renderer::setUpTexturedQuad()
 	//Unbind EBO
 	EBO1.Unbind();
 
-	
-
-
+	floorTexture = Texture("../../../Resources/Textures/AngledBlocksFloor/angled-blocks-vegetation_albedo.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+	floorTexture.texUnit(defaultShaderProgram, "tex0", 0);
 }
 
 void Renderer::drawTexturedQuad()
@@ -186,7 +185,7 @@ void Renderer::drawTexturedQuad()
 	//Assigns value to the uniform
 	//NOTE: Must always be done after activating the shader program
 	glUniform1f(uniID, 0.5f);
-
+	floorTexture.Bind();
 	//Bind VAO so OpenGL knows to use it 
 	VAO1.Bind();
 	//Draw the triangle using GL_TRIANGLES primitive
@@ -199,5 +198,5 @@ void Renderer::deleteTexturedQuad()
 	VAO1.Delete();
 	VBO1.Delete();
 	EBO1.Delete();
-	glDeleteTextures(1, &floorTexture);
+	floorTexture.Delete();
 }
