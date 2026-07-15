@@ -8,6 +8,39 @@ Renderer::~Renderer()
 {
 }
 
+void Renderer::setUpObjectsAndShaderProgram(const char* vertexShaderPath, const char* fragmentShaderPath, GLfloat verts[], GLsizeiptr vertsSize, GLuint indices[], GLsizeiptr indicesSize, bool hasEBO)
+{
+	//Create VAO
+	VAO1.Create();
+	//Bind the VAO
+	VAO1.Bind();
+
+	//Create shader program
+	defaultShaderProgram = Shader(vertexShaderPath, fragmentShaderPath);
+	//Create VBO
+	VBO1 = VBO(verts, vertsSize);
+	
+	if (hasEBO)
+	{
+		//Create EBO
+		EBO1 = EBO(indices, indicesSize);
+	}
+}
+
+void Renderer::unbindObjects(bool hasEBO)
+{
+	//Unbond VAO
+	VAO1.Unbind();
+	//Unbind VBO
+	VBO1.Unbind();
+
+	if (hasEBO)
+	{
+		//Unbind EBO
+		EBO1.Unbind();
+	}
+}
+
 void Renderer::setUp2DTriangle()
 {
 	//Create VAO
@@ -23,10 +56,8 @@ void Renderer::setUp2DTriangle()
 	//Links the VBO attributes such as colour and coordinates to the VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)0);
 	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
-	//Unbind VAO
-	VAO1.Unbind();
-	//Unbind VBO
-	VBO1.Unbind();
+	
+	unbindObjects(false);
 }
 
 void Renderer::draw2DTriangle()
@@ -69,12 +100,8 @@ void Renderer::setUpIndexBuffer2DTriangle()
 	//Links the VBO attributes such as colour and coordinates to the VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)0);
 	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
-	//Unbond VAO
-	VAO1.Unbind();
-	//Unbind VBO
-	VBO1.Unbind();
-	//Unbind EBO
-	EBO1.Unbind();
+	
+	unbindObjects(true);
 }
 
 void Renderer::drawIndexBuffer2DTriangle()
@@ -117,12 +144,8 @@ void Renderer::setUp2DSquare()
 	//Links the VBO attributes such as colour and coordinates to the VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)0);
 	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
-	//Unbond VAO
-	VAO1.Unbind();
-	//Unbind VBO
-	VBO1.Unbind();
-	//Unbind EBO
-	EBO1.Unbind();
+	
+	unbindObjects(true);
 }
 
 void Renderer::draw2DSquare()
@@ -166,12 +189,8 @@ void Renderer::setUpTexturedQuad()
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 9 * sizeof(GLfloat), (void*)0);
 	VAO1.LinkAttrib(VBO1, 1, 4, GL_FLOAT, 9 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
 	VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 9 * sizeof(GLfloat), (void*)(7 * sizeof(float)));
-	//Unbond VAO
-	VAO1.Unbind();
-	//Unbind VBO
-	VBO1.Unbind();
-	//Unbind EBO
-	EBO1.Unbind();
+	
+	unbindObjects(true);
 
 	//floor texture object
 	floorTexture = Texture("../../../Resources/Textures/AngledBlocksFloor/angled-blocks-vegetation_albedo.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
@@ -230,28 +249,14 @@ void Renderer::update3DView(const int width, const int height)
 
 void Renderer::setUpPyramid()
 {
-	//Create VAO
-	VAO1.Create();
-	//Bind the VAO
-	VAO1.Bind();
-
-	//Create shader program
-	defaultShaderProgram = Shader(defaultVertex3DShaderPath, defaultFragment3DShaderPath);
-	//Create VBO
-	VBO1 = VBO(pyramidVertices, sizeof(pyramidVertices));
-	//Create EBO
-	EBO1 = EBO(pyramidIndices, sizeof(pyramidIndices));
+	setUpObjectsAndShaderProgram(defaultVertex3DShaderPath, defaultFragment3DShaderPath, pyramidVertices, sizeof(pyramidVertices), pyramidIndices, sizeof(pyramidIndices), true);
 
 	//Links the VBO attributes such as colour and coordinates to the VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 9 * sizeof(GLfloat), (void*)0);
 	VAO1.LinkAttrib(VBO1, 1, 4, GL_FLOAT, 9 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
 	VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 9 * sizeof(GLfloat), (void*)(7 * sizeof(float)));
-	//Unbond VAO
-	VAO1.Unbind();
-	//Unbind VBO
-	VBO1.Unbind();
-	//Unbind EBO
-	EBO1.Unbind();
+	
+	unbindObjects(true);
 
 	//floor texture object
 	limeStoneCliffsTexture = Texture("../../../Resources/Textures/LimestoneCliffs/limestone-cliffs_albedo.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);

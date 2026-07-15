@@ -104,6 +104,10 @@ class Renderer
 		Renderer();
 		~Renderer();
 
+		//General rendering functions to reduce repatition of code
+		void setUpObjectsAndShaderProgram(const char* vertexShaderPath, const char* fragmentShaderPath, GLfloat verts[], GLsizeiptr vertsSize, GLuint indices[], GLsizeiptr indicesSize, bool hasEBO);
+		void unbindObjects(bool hasEBO);
+
 		//2D
 
 		//Triangle
