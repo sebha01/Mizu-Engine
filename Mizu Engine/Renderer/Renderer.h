@@ -98,6 +98,10 @@ class Renderer
 			2, 3, 4,
 			3, 0, 4
 		};
+
+		//timer variables
+		float rotation = 0.0f;
+		double prevTime = glfwGetTime();
 		
 	public:
 		//Constructor and Destructor

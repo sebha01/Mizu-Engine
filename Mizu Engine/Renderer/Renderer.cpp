@@ -88,7 +88,7 @@ void Renderer::delete2DTriangleVariables()
 
 void Renderer::setUpIndexBuffer2DTriangle()
 {
-	setUpObjectsAndShaderProgram(defaultVertex2DShaderPath, defaultFragment2DShaderPath, IndexBuffer2DTriVerts, sizeof(IndexBuffer2DTriVerts, IndexBufferIndices, sizeof(IndexBufferIndices), true);
+	setUpObjectsAndShaderProgram(defaultVertex2DShaderPath, defaultFragment2DShaderPath, IndexBuffer2DTriVerts, sizeof(IndexBuffer2DTriVerts), IndexBufferIndices, sizeof(IndexBufferIndices), true);
 
 	//Links the VBO attributes such as colour and coordinates to the VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)0);
@@ -176,9 +176,19 @@ void Renderer::update3DView(const int width, const int height)
 {
 	defaultShaderProgram.Activate();
 
+	double crntTime = glfwGetTime();
+	if (crntTime - prevTime >= 1 / 60)
+	{
+		rotation += 0.5f;
+		prevTime = crntTime;
+	}
+
 	model = glm::mat4(1.0f);
 	view = glm::mat4(1.0f);
 	proj = glm::mat4(1.0f);
+
+	//Rotate the object in 3D space
+	model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	//Set the world view position slightly back and a bit up
 	view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f));
