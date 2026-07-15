@@ -3,16 +3,12 @@
 // Outputs colors in RGBA
 out vec4 FragColor;
 
-//Inputs the colour from the vertex shader
-in vec4 colour;
-// Inputs the texture coordinates from the Vertex Shader
-in vec2 texCoord;
 
-// Gets the Texture Unit from the main function
-uniform sampler2D tex0;
+// Inputs the color from the Vertex Shader
+in vec3 color;
+
 
 void main()
 {
-	//FragColor = vec4(colour);
-	FragColor = texture(tex0, texCoord);
+	FragColor = vec4(color, 1.0f);
 }

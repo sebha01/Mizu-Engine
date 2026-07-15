@@ -41,7 +41,7 @@ void Renderer::unbindObjects(bool hasEBO)
 	}
 }
 
-void Renderer::beginDrawProcess(Texture* texture, bool hasTexture)
+void Renderer::beginDrawProcess(Texture* texture)
 {
 	//Gets ID of uniform called scale
 	uniID = glGetUniformLocation(defaultShaderProgram.ID, "scale");
@@ -49,7 +49,7 @@ void Renderer::beginDrawProcess(Texture* texture, bool hasTexture)
 	//NOTE: Must always be done after activating the shader program
 	glUniform1f(uniID, 0.5f);
 	
-	if (hasTexture)
+	if (texture != nullptr)
 	{
 		//Binds texture so it appears when rendered
 		texture->Bind();
@@ -57,6 +57,28 @@ void Renderer::beginDrawProcess(Texture* texture, bool hasTexture)
 
 	//Bind VAO so OpenGL knows to use it 
 	VAO1.Bind();
+}
+
+void Renderer::deleteObjectsTexturesAndShaderProgram(Texture* texture, bool hasEBO)
+{
+	//Delete VAO and VBO
+	VAO1.Delete();
+	VBO1.Delete();
+
+	//check if the objects relevant to the shape being rendered have an ebo
+	if (hasEBO)
+	{
+		EBO1.Delete();
+	}
+	
+	//Check if the object has a texture
+	if (texture != nullptr)
+	{
+		texture->Delete();
+	}
+
+	//Delete the default shader program
+	defaultShaderProgram.Delete();
 }
 
 void Renderer::setUp2DTriangle()
@@ -72,7 +94,7 @@ void Renderer::setUp2DTriangle()
 
 void Renderer::draw2DTriangle()
 {
-	beginDrawProcess(nullptr, false);
+	beginDrawProcess(nullptr);
 
 	//Draw the triangle using GL_TRIANGLES primitive
 	glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -81,9 +103,7 @@ void Renderer::draw2DTriangle()
 void Renderer::delete2DTriangleVariables()
 {
 	//Delete all objects created when rendering the 2D triangle
-	VAO1.Delete();
-	VBO1.Delete();
-	defaultShaderProgram.Delete();
+	deleteObjectsTexturesAndShaderProgram(nullptr, true);
 }
 
 void Renderer::setUpIndexBuffer2DTriangle()
@@ -99,7 +119,7 @@ void Renderer::setUpIndexBuffer2DTriangle()
 
 void Renderer::drawIndexBuffer2DTriangle()
 {
-	beginDrawProcess(nullptr, false);
+	beginDrawProcess(nullptr);
 
 	//Draw the triangle using GL_TRIANGLES primitive
 	glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
@@ -108,9 +128,7 @@ void Renderer::drawIndexBuffer2DTriangle()
 void Renderer::deleteIndexBuffer2DTriangleVariables()
 {
 	//Delete all objects created when rendering the 2D Indices triangle
-	VAO1.Delete();
-	VBO1.Delete();
-	EBO1.Delete();
+	deleteObjectsTexturesAndShaderProgram(nullptr, true);
 }
 
 void Renderer::setUp2DSquare()
@@ -126,7 +144,7 @@ void Renderer::setUp2DSquare()
 
 void Renderer::draw2DSquare()
 {
-	beginDrawProcess(nullptr, false);
+	beginDrawProcess(nullptr);
 
 	//Draw the triangle using GL_TRIANGLES primitive
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -135,14 +153,12 @@ void Renderer::draw2DSquare()
 void Renderer::delete2DSquare()
 {
 	//Delete all objects created when rendering the 2D square
-	VAO1.Delete();
-	VBO1.Delete();
-	EBO1.Delete();
+	deleteObjectsTexturesAndShaderProgram(nullptr, true);
 }
 
 void Renderer::setUpTexturedQuad()
 {
-	setUpObjectsAndShaderProgram(defaultVertex2DShaderPath, defaultFragment2DShaderPath, squareVertices, sizeof(squareVertices), squareIndices, sizeof(squareIndices), true);
+	setUpObjectsAndShaderProgram(defaultVertex2DTextureShaderPath, defaultFragment2DTextureShaderPath, texturedQuadVertices, sizeof(texturedQuadVertices), texturedQuadIndices, sizeof(texturedQuadIndices), true);
 
 	//Links the VBO attributes such as colour and coordinates to the VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 9 * sizeof(GLfloat), (void*)0);
@@ -157,7 +173,7 @@ void Renderer::setUpTexturedQuad()
 
 void Renderer::drawTexturedQuad()
 {
-	beginDrawProcess(&floorTexture, true);
+	beginDrawProcess(&floorTexture);
 
 	//Draw the triangle using GL_TRIANGLES primitive
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -166,18 +182,17 @@ void Renderer::drawTexturedQuad()
 void Renderer::deleteTexturedQuad()
 {
 	//Delete all objects created when rendering the textured quad
-	VAO1.Delete();
-	VBO1.Delete();
-	EBO1.Delete();
-	floorTexture.Delete();
+	deleteObjectsTexturesAndShaderProgram(&floorTexture, true);
 }
 
 void Renderer::update3DView(const int width, const int height)
 {
+	//Enables depth buffer
 	glEnable(GL_DEPTH_TEST);
 
 	defaultShaderProgram.Activate();
 
+	//Simple timer
 	double crntTime = glfwGetTime();
 	if (crntTime - prevTime >= 1 / 60)
 	{
@@ -185,25 +200,29 @@ void Renderer::update3DView(const int width, const int height)
 		prevTime = crntTime;
 	}
 
+	//Define the matrices so they are not null
 	model = glm::mat4(1.0f);
 	view = glm::mat4(1.0f);
 	proj = glm::mat4(1.0f);
 
+	//Assign transformations to the matrices
 	//Rotate the object in 3D space
 	model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
-
 	//Set the world view position slightly back and a bit up
 	view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f));
 	//					Field Of View (radians)	Aspect Ratio of screen	closest point /furthest point we can see
 	//For now aspect ratio will remain as normal
 	proj = glm::perspective(glm::radians(45.0f), (float)(width / height),	0.01f,				1000.0f);
 
+
+	//Output matrices into the vertex shader
+	//model matrix
 	modelLoc = glGetUniformLocation(defaultShaderProgram.ID, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-
+	//view matrix
 	viewLoc = glGetUniformLocation(defaultShaderProgram.ID, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-
+	//projection matrix
 	projLoc = glGetUniformLocation(defaultShaderProgram.ID, "proj");
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
 }
@@ -225,8 +244,14 @@ void Renderer::setUpPyramid()
 
 void Renderer::drawPyramid()
 {
-	beginDrawProcess(&limeStoneCliffsTexture, true);
+	beginDrawProcess(&limeStoneCliffsTexture);
 
 	//Draw the triangle using GL_TRIANGLES primitive
 	glDrawElements(GL_TRIANGLES, sizeof(pyramidIndices)/sizeof(int), GL_UNSIGNED_INT, 0);
+}
+
+void Renderer::deletePyramid()
+{
+	//Delete all objects, textures and shader program associated with the pyramid object
+	deleteObjectsTexturesAndShaderProgram(&limeStoneCliffsTexture, true);
 }

@@ -37,6 +37,19 @@ class Renderer
 		};
 		//2D square vertices
 		GLfloat squareVertices[36] = {
+			// COORDINATES				//			COLOURS					//
+			-0.5f, -0.5f, 0.0f,			green.r, green.g, green.b, green.a,	// Lower left corner
+			-0.5f,  0.5f, 0.0f,			blue.r,	 blue.g,  blue.b,  blue.a,	// Lower left corner
+			 0.5f,  0.5f, 0.0f,			red.r,   red.g,   red.b,   red.a,	// Lower left corner
+			 0.5f, -0.5f, 0.0f,			white.r, white.g, white.b, white.a	// Lower left corner
+		};
+		//2D square indices   
+		GLuint squareIndices[6] = {
+			0, 2, 1, //Upper triangle
+			0, 3, 2	//Lower triangle
+		};
+		//2D square vertices
+		GLfloat texturedQuadVertices[36] = {
 			// COORDINATES				//			COLOURS				//			TEX COORDS		//
 			-0.5f, -0.5f, 0.0f,			green.r, green.g, green.b, green.a,			0.0f, 0.0f,		// Lower left corner
 			-0.5f,  0.5f, 0.0f,			blue.r,	 blue.g,  blue.b,  blue.a,			0.0f, 1.0f,		// Lower left corner
@@ -44,7 +57,7 @@ class Renderer
 			 0.5f, -0.5f, 0.0f,			white.r, white.g, white.b, white.a,			1.0f, 0.0f,		// Lower left corner
 		};
 		//2D square indices   
-		GLuint squareIndices[6] = {
+		GLuint texturedQuadIndices[6] = {
 			0, 2, 1, //Upper triangle
 			0, 3, 2	//Lower triangle
 		};
@@ -59,9 +72,12 @@ class Renderer
 		GLuint uniID;
 
 		//Shader filepaths
-		//2D shaders
+		// //2D shaders
 		const char* defaultVertex2DShaderPath = "../../../Resources/Shaders/default2DShader.vert";
 		const char* defaultFragment2DShaderPath = "../../../Resources/Shaders/default2DShader.frag";
+		//2D texture shaders
+		const char* defaultVertex2DTextureShaderPath = "../../../Resources/Shaders/default2DTextureShader.vert";
+		const char* defaultFragment2DTextureShaderPath = "../../../Resources/Shaders/default2DTextureShader.frag";
 		//3D shaders
 		const char* defaultVertex3DShaderPath = "../../../Resources/Shaders/default3DShader.vert";
 		const char* defaultFragment3DShaderPath = "../../../Resources/Shaders/default3DShader.frag";
@@ -99,7 +115,7 @@ class Renderer
 			3, 0, 4
 		};
 
-		//timer variables
+		//timer variables that help the 3D models rotate
 		float rotation = 0.0f;
 		double prevTime = glfwGetTime();
 		
@@ -111,7 +127,8 @@ class Renderer
 		//General rendering functions to reduce repatition of code
 		void setUpObjectsAndShaderProgram(const char* vertexShaderPath, const char* fragmentShaderPath, GLfloat verts[], GLsizeiptr vertsSize, GLuint indices[], GLsizeiptr indicesSize, bool hasEBO);
 		void unbindObjects(bool hasEBO);
-		void beginDrawProcess(Texture* texture, bool hasTexture);
+		void beginDrawProcess(Texture* texture);
+		void deleteObjectsTexturesAndShaderProgram(Texture* texture, bool hasEBO);
 
 		//2D
 
@@ -140,4 +157,5 @@ class Renderer
 		//pyramid
 		void setUpPyramid();
 		void drawPyramid();
+		void deletePyramid();
 };
