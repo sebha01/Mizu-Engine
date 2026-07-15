@@ -63,6 +63,11 @@ class Renderer
 		const char* fragmentShaderPath = "../../../Resources/Shaders/defaultShader.frag";
 
 		Texture floorTexture;
+
+		//3D
+		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 view = glm::mat4(1.0f);
+		glm::mat4 proj = glm::mat4(1.0f);
 		
 	public:
 		//Constructor and Destructor
@@ -88,4 +93,8 @@ class Renderer
 		void setUpTexturedQuad();
 		void drawTexturedQuad();
 		void deleteTexturedQuad();
+
+
+		//3D
+		void update3DView();
 };

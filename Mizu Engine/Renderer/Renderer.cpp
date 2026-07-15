@@ -202,3 +202,8 @@ void Renderer::deleteTexturedQuad()
 	EBO1.Delete();
 	floorTexture.Delete();
 }
+
+void Renderer::update3DView()
+{
+
+}
