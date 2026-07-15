@@ -59,15 +59,23 @@ class Renderer
 		GLuint uniID;
 
 		//Shader filepaths
-		const char* vertexShaderPath = "../../../Resources/Shaders/defaultShader.vert";
-		const char* fragmentShaderPath = "../../../Resources/Shaders/defaultShader.frag";
+		//2D shaders
+		const char* defaultVertex2DShaderPath = "../../../Resources/Shaders/default2DShader.vert";
+		const char* defaultFragment2DShaderPath = "../../../Resources/Shaders/default2DShader.frag";
+		//3D shaders
+		const char* defaultVertex3DShaderPath = "../../../Resources/Shaders/default3DShader.vert";
+		const char* defaultFragment3DShaderPath = "../../../Resources/Shaders/default3DShader.frag";
 
 		Texture floorTexture;
 
 		//3D
-		glm::mat4 model = glm::mat4(1.0f);
-		glm::mat4 view = glm::mat4(1.0f);
-		glm::mat4 proj = glm::mat4(1.0f);
+		glm::mat4 model;
+		glm::mat4 view;
+		glm::mat4 proj;
+
+		int modelLoc = 0;
+		int viewLoc = 0;
+		int projLoc = 0;
 		
 	public:
 		//Constructor and Destructor
@@ -96,5 +104,6 @@ class Renderer
 
 
 		//3D
-		void update3DView();
+		void set3DShaderProgram();
+		void update3DView(const int width, const int height);
 };
