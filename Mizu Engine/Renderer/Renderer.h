@@ -70,8 +70,6 @@ class Renderer
 		VBO VBO1;
 		EBO EBO1;
 
-		GLuint uniID;
-
 		//Shader filepaths
 		// //2D shaders
 		const char* defaultVertex2DShaderPath = "../../../Resources/Shaders/default2DShader.vert";
@@ -87,14 +85,6 @@ class Renderer
 		Texture limeStoneCliffsTexture;
 
 		//3D
-		glm::mat4 model;
-		glm::mat4 view;
-		glm::mat4 proj;
-
-		int modelLoc = 0;
-		int viewLoc = 0;
-		int projLoc = 0;
-
 		//3D pyramid vertices
 		GLfloat pyramidVertices[45] =
 		{ //     COORDINATES     /				COLORS					/		TexCoord  //
@@ -116,9 +106,7 @@ class Renderer
 			3, 0, 4
 		};
 
-		//timer variables that help the 3D models rotate
-		float rotation = 0.0f;
-		double prevTime = glfwGetTime();
+		Camera camera;
 		
 	public:
 		//Constructor and Destructor
@@ -130,6 +118,7 @@ class Renderer
 		void unbindObjects(bool hasEBO);
 		void beginDrawProcess(Texture* texture);
 		void deleteObjectsTexturesAndShaderProgram(Texture* texture, bool hasEBO);
+		void setUpCamera(const int width, const int height);
 
 		//2D
 

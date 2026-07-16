@@ -42,13 +42,7 @@ void Renderer::unbindObjects(bool hasEBO)
 }
 
 void Renderer::beginDrawProcess(Texture* texture)
-{
-	//Gets ID of uniform called scale
-	uniID = glGetUniformLocation(defaultShaderProgram.ID, "scale");
-	//Assigns value to the uniform
-	//NOTE: Must always be done after activating the shader program
-	glUniform1f(uniID, 0.5f);
-	
+{	
 	if (texture != nullptr)
 	{
 		//Binds texture so it appears when rendered
@@ -79,6 +73,11 @@ void Renderer::deleteObjectsTexturesAndShaderProgram(Texture* texture, bool hasE
 
 	//Delete the default shader program
 	defaultShaderProgram.Delete();
+}
+
+void Renderer::setUpCamera(const int width, const int height)
+{
+	camera = Camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 }
 
 void Renderer::setUp2DTriangle()
@@ -192,39 +191,7 @@ void Renderer::update3DView(const int width, const int height)
 
 	defaultShaderProgram.Activate();
 
-	//Simple timer
-	double crntTime = glfwGetTime();
-	if (crntTime - prevTime >= 1 / 60)
-	{
-		rotation += 0.05f;
-		prevTime = crntTime;
-	}
-
-	//Define the matrices so they are not null
-	model = glm::mat4(1.0f);
-	view = glm::mat4(1.0f);
-	proj = glm::mat4(1.0f);
-
-	//Assign transformations to the matrices
-	//Rotate the object in 3D space
-	model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
-	//Set the world view position slightly back and a bit up
-	view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f));
-	//					Field Of View (radians)	Aspect Ratio of screen	closest point /furthest point we can see
-	//For now aspect ratio will remain as normal
-	proj = glm::perspective(glm::radians(45.0f), (float)(width / height),	0.01f,				1000.0f);
-
-
-	//Output matrices into the vertex shader
-	//model matrix
-	modelLoc = glGetUniformLocation(defaultShaderProgram.ID, "model");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	//view matrix
-	viewLoc = glGetUniformLocation(defaultShaderProgram.ID, "view");
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-	//projection matrix
-	projLoc = glGetUniformLocation(defaultShaderProgram.ID, "proj");
-	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+	camera.Matrix(45.0f, 0.1f, 100.0f, defaultShaderProgram, "camMatrix");
 }
 
 void Renderer::setUpPyramid()

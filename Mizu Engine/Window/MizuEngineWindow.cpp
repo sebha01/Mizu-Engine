@@ -72,6 +72,8 @@ void MizuEngineWindow::WindowInit()
 	//glViewport(0, 0, mode->width * 0.66, mode->height * 0.66);
 	glViewport(0, 0, defaultWindowWidth, defaultWindowHeight);
 
+	MizuEngineRenderer.setUpCamera(defaultWindowWidth, defaultWindowHeight);
+
 	//Set up everything needed to render the 2D Triangle
 	//MizuEngineRenderer.setUp2DTriangle();
 	//MizuEngineRenderer.setUpIndexBuffer2DTriangle();
