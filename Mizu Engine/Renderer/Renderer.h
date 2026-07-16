@@ -8,6 +8,7 @@
 #include "VBO/VBO.h"
 #include "EBO/EBO.h"
 #include "stb_image.h"
+#include "Camera/Camera.h"
 
 class Renderer
 {
