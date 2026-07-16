@@ -38,7 +38,7 @@ add_executable(cmake_test
 	"Mizu Engine/Renderer/VAO/VAO.h" 
 	"Mizu Engine/Renderer/VAO/VAO.cpp" 
 	"Mizu Engine/stb.cpp"
- "Mizu Engine/Renderer/Texture/Texture.h" "Mizu Engine/Renderer/Texture/Texture.cpp")
+ "Mizu Engine/Renderer/Texture/Texture.h" "Mizu Engine/Renderer/Texture/Texture.cpp" "Mizu Engine/Renderer/Camera/Camera.h" "Mizu Engine/Renderer/Camera/Camera.cpp")
 
 target_include_directories(cmake_test PRIVATE 
 	"Mizu Engine"
