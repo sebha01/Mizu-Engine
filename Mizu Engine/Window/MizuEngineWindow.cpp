@@ -72,11 +72,14 @@ void MizuEngineWindow::WindowInit()
 	//glViewport(0, 0, mode->width * 0.66, mode->height * 0.66);
 	glViewport(0, 0, defaultWindowWidth, defaultWindowHeight);
 
+	MizuEngineRenderer.setUpCamera(defaultWindowWidth, defaultWindowHeight);
+
 	//Set up everything needed to render the 2D Triangle
 	//MizuEngineRenderer.setUp2DTriangle();
 	//MizuEngineRenderer.setUpIndexBuffer2DTriangle();
 	//MizuEngineRenderer.setUp2DSquare();
-	MizuEngineRenderer.setUpTexturedQuad();
+	//MizuEngineRenderer.setUpTexturedQuad();
+	MizuEngineRenderer.setUpPyramid();
 }
 
 void MizuEngineWindow::WindowUpdate()
@@ -89,14 +92,20 @@ void MizuEngineWindow::WindowUpdate()
 
 		//Clear colour from last frame and specify bg colour
 		glClearColor(0.08f, 0.12f, 0.35f, 1.0f);
-		//Clear back buffer and assign new colour to it
-		glClear(GL_COLOR_BUFFER_BIT);
+		//Clear back buffer and depth buffer
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//rendering loop here
+		//Handles camera inputs within the scene
+		MizuEngineRenderer.enableCameraInputs(window);
+		//Update the 3D view of the scene
+		MizuEngineRenderer.update3DView(defaultWindowWidth, defaultWindowHeight);
+		
 		//MizuEngineRenderer.draw2DTriangle();
 		//MizuEngineRenderer.drawIndexBuffer2DTriangle();
 		//MizuEngineRenderer.draw2DSquare();
-		MizuEngineRenderer.drawTexturedQuad();
+		//MizuEngineRenderer.drawTexturedQuad();
+		MizuEngineRenderer.drawPyramid();
 
 		//swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
@@ -111,7 +120,8 @@ void MizuEngineWindow::WindowTerminate()
 	//MizuEngineRenderer.delete2DTriangleVariables();
 	//MizuEngineRenderer.deleteIndexBuffer2DTriangleVariables();
 	//MizuEngineRenderer.delete2DSquare();
-	MizuEngineRenderer.deleteTexturedQuad();
+	//MizuEngineRenderer.deleteTexturedQuad();
+	MizuEngineRenderer.deletePyramid();
 
 	//Terminate GLFW before ending the program
 	glfwTerminate();

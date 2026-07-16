@@ -8,6 +8,7 @@
 #include "VBO/VBO.h"
 #include "EBO/EBO.h"
 #include "stb_image.h"
+#include "Camera/Camera.h"
 
 class Renderer
 {
@@ -37,6 +38,19 @@ class Renderer
 		};
 		//2D square vertices
 		GLfloat squareVertices[36] = {
+			// COORDINATES				//			COLOURS					//
+			-0.5f, -0.5f, 0.0f,			green.r, green.g, green.b, green.a,	// Lower left corner
+			-0.5f,  0.5f, 0.0f,			blue.r,	 blue.g,  blue.b,  blue.a,	// Lower left corner
+			 0.5f,  0.5f, 0.0f,			red.r,   red.g,   red.b,   red.a,	// Lower left corner
+			 0.5f, -0.5f, 0.0f,			white.r, white.g, white.b, white.a	// Lower left corner
+		};
+		//2D square indices   
+		GLuint squareIndices[6] = {
+			0, 2, 1, //Upper triangle
+			0, 3, 2	//Lower triangle
+		};
+		//2D square vertices
+		GLfloat texturedQuadVertices[36] = {
 			// COORDINATES				//			COLOURS				//			TEX COORDS		//
 			-0.5f, -0.5f, 0.0f,			green.r, green.g, green.b, green.a,			0.0f, 0.0f,		// Lower left corner
 			-0.5f,  0.5f, 0.0f,			blue.r,	 blue.g,  blue.b,  blue.a,			0.0f, 1.0f,		// Lower left corner
@@ -44,7 +58,7 @@ class Renderer
 			 0.5f, -0.5f, 0.0f,			white.r, white.g, white.b, white.a,			1.0f, 0.0f,		// Lower left corner
 		};
 		//2D square indices   
-		GLuint squareIndices[6] = {
+		GLuint texturedQuadIndices[6] = {
 			0, 2, 1, //Upper triangle
 			0, 3, 2	//Lower triangle
 		};
@@ -56,18 +70,56 @@ class Renderer
 		VBO VBO1;
 		EBO EBO1;
 
-		GLuint uniID;
-
 		//Shader filepaths
-		const char* vertexShaderPath = "../../../Resources/Shaders/defaultShader.vert";
-		const char* fragmentShaderPath = "../../../Resources/Shaders/defaultShader.frag";
+		// //2D shaders
+		const char* defaultVertex2DShaderPath = "../../../Resources/Shaders/default2DShader.vert";
+		const char* defaultFragment2DShaderPath = "../../../Resources/Shaders/default2DShader.frag";
+		//2D texture shaders
+		const char* defaultVertex2DTextureShaderPath = "../../../Resources/Shaders/default2DTextureShader.vert";
+		const char* defaultFragment2DTextureShaderPath = "../../../Resources/Shaders/default2DTextureShader.frag";
+		//3D shaders
+		const char* defaultVertex3DShaderPath = "../../../Resources/Shaders/default3DShader.vert";
+		const char* defaultFragment3DShaderPath = "../../../Resources/Shaders/default3DShader.frag";
 
 		Texture floorTexture;
+		Texture limeStoneCliffsTexture;
+
+		//3D
+		//3D pyramid vertices
+		GLfloat pyramidVertices[45] =
+		{ //     COORDINATES     /				COLORS					/		TexCoord  //
+			-0.5f, 0.0f,  0.5f,     red.r,   red.g,   red.b,   red.a,			0.0f, 0.0f,
+			-0.5f, 0.0f, -0.5f,     blue.r,  blue.g,  blue.b,  blue.a,			5.0f, 0.0f,
+			 0.5f, 0.0f, -0.5f,     green.r, green.g, green.b, green.a,			0.0f, 0.0f,
+			 0.5f, 0.0f,  0.5f,     white.r, white.g, white.b, white.a,			5.0f, 0.0f,
+			 0.0f, 0.8f,  0.0f,     black.r, black.g, black.b, black.a,			2.5f, 5.0f
+		};
+
+		// Indices for vertices order
+		GLuint pyramidIndices[18] =
+		{
+			0, 1, 2,
+			0, 2, 3,
+			0, 1, 4,
+			1, 2, 4,
+			2, 3, 4,
+			3, 0, 4
+		};
+
+		Camera camera;
 		
 	public:
 		//Constructor and Destructor
 		Renderer();
 		~Renderer();
+
+		//General rendering functions to reduce repatition of code
+		void setUpObjectsAndShaderProgram(const char* vertexShaderPath, const char* fragmentShaderPath, GLfloat verts[], GLsizeiptr vertsSize, GLuint indices[], GLsizeiptr indicesSize, bool hasEBO);
+		void unbindObjects(bool hasEBO);
+		void beginDrawProcess(Texture* texture);
+		void deleteObjectsTexturesAndShaderProgram(Texture* texture, bool hasEBO);
+		void setUpCamera(const int width, const int height);
+		void enableCameraInputs(GLFWwindow* window);
 
 		//2D
 
@@ -88,4 +140,13 @@ class Renderer
 		void setUpTexturedQuad();
 		void drawTexturedQuad();
 		void deleteTexturedQuad();
+
+
+		//3D
+		void update3DView(const int width, const int height);
+
+		//pyramid
+		void setUpPyramid();
+		void drawPyramid();
+		void deletePyramid();
 };
