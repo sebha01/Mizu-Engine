@@ -96,8 +96,9 @@ void MizuEngineWindow::WindowUpdate()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//rendering loop here
-		//Update the 3D view of the scene
+		//Handles camera inputs within the scene
 		MizuEngineRenderer.enableCameraInputs(window);
+		//Update the 3D view of the scene
 		MizuEngineRenderer.update3DView(defaultWindowWidth, defaultWindowHeight);
 		
 		//MizuEngineRenderer.draw2DTriangle();

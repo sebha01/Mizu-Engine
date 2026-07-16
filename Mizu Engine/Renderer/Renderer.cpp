@@ -43,6 +43,7 @@ void Renderer::unbindObjects(bool hasEBO)
 
 void Renderer::beginDrawProcess(Texture* texture)
 {	
+	//Check if the texture has an actual value
 	if (texture != nullptr)
 	{
 		//Binds texture so it appears when rendered
@@ -77,27 +78,32 @@ void Renderer::deleteObjectsTexturesAndShaderProgram(Texture* texture, bool hasE
 
 void Renderer::setUpCamera(const int width, const int height)
 {
+	//Initialise camera object and set its' default values
 	camera = Camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 }
 
 void Renderer::enableCameraInputs(GLFWwindow* window)
 {
+	//Handles camera inputs
 	camera.Inputs(window);
 }
 
 void Renderer::setUp2DTriangle()
 {
+	//Set up relevant objects and shader program to render the triangle
 	setUpObjectsAndShaderProgram(defaultVertex2DShaderPath, defaultFragment2DShaderPath, Triangle2DVertices, sizeof(Triangle2DVertices), nullptr, 0, false);
 	
 	//Links the VBO attributes such as colour and coordinates to the VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)0);
 	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
 	
+	//Unbind relevant objects used to render the triangle
 	unbindObjects(false);
 }
 
 void Renderer::draw2DTriangle()
 {
+	//Start the drawing process for the triangle
 	beginDrawProcess(nullptr);
 
 	//Draw the triangle using GL_TRIANGLES primitive
@@ -112,17 +118,20 @@ void Renderer::delete2DTriangleVariables()
 
 void Renderer::setUpIndexBuffer2DTriangle()
 {
+	//Set up objects and shader program to use when rendering the index buffer triangle
 	setUpObjectsAndShaderProgram(defaultVertex2DShaderPath, defaultFragment2DShaderPath, IndexBuffer2DTriVerts, sizeof(IndexBuffer2DTriVerts), IndexBufferIndices, sizeof(IndexBufferIndices), true);
 
 	//Links the VBO attributes such as colour and coordinates to the VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)0);
 	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
 	
+	//Unbind objects associated with rendering the index buffer triangle
 	unbindObjects(true);
 }
 
 void Renderer::drawIndexBuffer2DTriangle()
 {
+	//begin the draw process for the index buffer triangle
 	beginDrawProcess(nullptr);
 
 	//Draw the triangle using GL_TRIANGLES primitive
@@ -137,17 +146,20 @@ void Renderer::deleteIndexBuffer2DTriangleVariables()
 
 void Renderer::setUp2DSquare()
 {
+	//Set up objects and shader program to render the quad
 	setUpObjectsAndShaderProgram(defaultVertex2DShaderPath, defaultFragment2DShaderPath, squareVertices, sizeof(squareVertices), squareIndices, sizeof(squareIndices), true);
 
 	//Links the VBO attributes such as colour and coordinates to the VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)0);
 	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 7 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
 	
+	//Unbind the objects associated with rendering the quad
 	unbindObjects(true);
 }
 
 void Renderer::draw2DSquare()
 {
+	//Begin the drawing process for the quad
 	beginDrawProcess(nullptr);
 
 	//Draw the triangle using GL_TRIANGLES primitive
@@ -162,6 +174,7 @@ void Renderer::delete2DSquare()
 
 void Renderer::setUpTexturedQuad()
 {
+	//Set up objects and shader program to render the textured quad
 	setUpObjectsAndShaderProgram(defaultVertex2DTextureShaderPath, defaultFragment2DTextureShaderPath, texturedQuadVertices, sizeof(texturedQuadVertices), texturedQuadIndices, sizeof(texturedQuadIndices), true);
 
 	//Links the VBO attributes such as colour and coordinates to the VAO
@@ -169,6 +182,7 @@ void Renderer::setUpTexturedQuad()
 	VAO1.LinkAttrib(VBO1, 1, 4, GL_FLOAT, 9 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
 	VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 9 * sizeof(GLfloat), (void*)(7 * sizeof(float)));
 	
+	//Unbind the objects associated with rendering the textured quad
 	unbindObjects(true);
 
 	//floor texture object
@@ -177,6 +191,7 @@ void Renderer::setUpTexturedQuad()
 
 void Renderer::drawTexturedQuad()
 {
+	//Begin the draw process for rendering the textured quad
 	beginDrawProcess(&floorTexture);
 
 	//Draw the triangle using GL_TRIANGLES primitive
@@ -194,13 +209,16 @@ void Renderer::update3DView(const int width, const int height)
 	//Enables depth buffer
 	glEnable(GL_DEPTH_TEST);
 
+	//Activate default shader program
 	defaultShaderProgram.Activate();
 
+	// Updates and exports the camera matrix to the Vertex Shader
 	camera.Matrix(45.0f, 0.1f, 100.0f, defaultShaderProgram, "camMatrix");
 }
 
 void Renderer::setUpPyramid()
 {
+	//Set up objects and shader program to render the 3D pyramid
 	setUpObjectsAndShaderProgram(defaultVertex3DShaderPath, defaultFragment3DShaderPath, pyramidVertices, sizeof(pyramidVertices), pyramidIndices, sizeof(pyramidIndices), true);
 
 	//Links the VBO attributes such as colour and coordinates to the VAO
@@ -208,6 +226,7 @@ void Renderer::setUpPyramid()
 	VAO1.LinkAttrib(VBO1, 1, 4, GL_FLOAT, 9 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
 	VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 9 * sizeof(GLfloat), (void*)(7 * sizeof(float)));
 	
+	//Unbind the objects
 	unbindObjects(true);
 
 	//floor texture object
@@ -216,6 +235,7 @@ void Renderer::setUpPyramid()
 
 void Renderer::drawPyramid()
 {
+	//Begin drawing process for 3D pyramid
 	beginDrawProcess(&limeStoneCliffsTexture);
 
 	//Draw the triangle using GL_TRIANGLES primitive

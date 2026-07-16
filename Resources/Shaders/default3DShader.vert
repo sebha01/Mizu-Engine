@@ -15,6 +15,7 @@ out vec2 texCoord;
 // Controls the scale of the vertices
 uniform float scale;
 
+// Imports the camera matrix from the main function
 uniform mat4 camMatrix;
 
 void main()
