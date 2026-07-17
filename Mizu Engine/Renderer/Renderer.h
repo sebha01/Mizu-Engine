@@ -107,6 +107,52 @@ class Renderer
 		};
 
 		Camera camera;
+
+		//Lights
+
+		Shader lightShader;
+		//light shader
+		const char* lightVertexShaderPath = "../../../Resources/Shaders/light.vert";
+		const char* lightFragmentShaderPath = "../../../Resources/Shaders/light.frag";
+		
+		VAO lightVAO;
+		VBO lightVBO;
+		EBO lightEBO;
+
+
+		GLfloat lightVertices[24] =
+		{ //     COORDINATES     //
+			-0.1f, -0.1f,  0.1f,
+			-0.1f, -0.1f, -0.1f,
+			 0.1f, -0.1f, -0.1f,
+			 0.1f, -0.1f,  0.1f,
+			-0.1f,  0.1f,  0.1f,
+			-0.1f,  0.1f, -0.1f,
+			 0.1f,  0.1f, -0.1f,
+			 0.1f,  0.1f,  0.1f
+		};
+
+		GLuint lightIndices[36] =
+		{
+			0, 1, 2,
+			0, 2, 3,
+			0, 4, 7,
+			0, 7, 3,
+			3, 7, 6,
+			3, 6, 2,
+			2, 6, 5,
+			2, 5, 1,
+			1, 5, 4,
+			1, 4, 0,
+			4, 5, 6,
+			4, 6, 7
+		};
+
+		glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
+		glm::mat4 lightModel = glm::mat4(1.0f);
+
+		glm::vec3 pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::mat4 pyramidModel = glm::mat4(1.0f);
 		
 	public:
 		//Constructor and Destructor
@@ -149,4 +195,9 @@ class Renderer
 		void setUpPyramid();
 		void drawPyramid();
 		void deletePyramid();
+
+		//pyramid with lightShader
+		void setUpLitPyramid();
+		void drawLitPyramid();
+		void deleteLitPyramid();
 };

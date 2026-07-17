@@ -209,11 +209,12 @@ void Renderer::update3DView(const int width, const int height)
 	//Enables depth buffer
 	glEnable(GL_DEPTH_TEST);
 
+	// Updates and exports the camera matrix to the Vertex Shader
+	camera.updateMatrix(45.0f, 0.1f, 100.0f);
+
 	//Activate default shader program
 	defaultShaderProgram.Activate();
-
-	// Updates and exports the camera matrix to the Vertex Shader
-	camera.Matrix(45.0f, 0.1f, 100.0f, defaultShaderProgram, "camMatrix");
+	camera.Matrix(defaultShaderProgram, "camMatrix");
 }
 
 void Renderer::setUpPyramid()
@@ -243,6 +244,51 @@ void Renderer::drawPyramid()
 }
 
 void Renderer::deletePyramid()
+{
+	//Delete all objects, textures and shader program associated with the pyramid object
+	deleteObjectsTexturesAndShaderProgram(&limeStoneCliffsTexture, true);
+}
+
+void Renderer::setUpLitPyramid()
+{
+	setUpPyramid();
+
+	//Light stuff
+	lightShader = Shader(lightVertexShaderPath, lightFragmentShaderPath);
+	lightVAO.Bind();
+	lightVBO = VBO(lightVertices, sizeof(lightVertices));
+	lightEBO = EBO(lightIndices, sizeof(lightIndices));
+
+	lightVAO.LinkAttrib(lightVBO, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+
+	lightVAO.Unbind();
+	lightVBO.Unbind();
+	lightEBO.Unbind();
+
+	lightModel = glm::translate(lightModel, lightPos);
+	pyramidModel = glm::translate(pyramidModel, pyramidPos);
+
+	lightShader.Activate();
+	glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
+	defaultShaderProgram.Activate();
+	glUniformMatrix4fv(glGetUniformLocation(defaultShaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
+}
+
+void Renderer::drawLitPyramid()
+{
+	//Begin drawing process for 3D pyramid
+	beginDrawProcess(&limeStoneCliffsTexture);
+
+	//Draw the triangle using GL_TRIANGLES primitive
+	glDrawElements(GL_TRIANGLES, sizeof(pyramidIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
+
+	lightShader.Activate();
+	camera.Matrix(lightShader, "camMatrix");
+	lightVAO.Bind();
+	glDrawElements(GL_TRIANGLES, sizeof(lightIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
+}
+
+void Renderer::deleteLitPyramid()
 {
 	//Delete all objects, textures and shader program associated with the pyramid object
 	deleteObjectsTexturesAndShaderProgram(&limeStoneCliffsTexture, true);
