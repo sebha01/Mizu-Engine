@@ -255,6 +255,7 @@ void Renderer::setUpLitPyramid()
 
 	//Light stuff
 	lightShader = Shader(lightVertexShaderPath, lightFragmentShaderPath);
+	lightVAO.Create();
 	lightVAO.Bind();
 	lightVBO = VBO(lightVertices, sizeof(lightVertices));
 	lightEBO = EBO(lightIndices, sizeof(lightIndices));
@@ -265,13 +266,17 @@ void Renderer::setUpLitPyramid()
 	lightVBO.Unbind();
 	lightEBO.Unbind();
 
+	glm::vec4 lightColour = glm::vec4(red.r, red.g, red.b, red.a);
+
 	lightModel = glm::translate(lightModel, lightPos);
 	pyramidModel = glm::translate(pyramidModel, pyramidPos);
 
 	lightShader.Activate();
 	glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
+	glUniform4f(glGetUniformLocation(lightShader.ID, "lightColour"), lightColour.x, lightColour.y, lightColour.z, lightColour.w);
 	defaultShaderProgram.Activate();
 	glUniformMatrix4fv(glGetUniformLocation(defaultShaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
+	glUniform4f(glGetUniformLocation(defaultShaderProgram.ID, "lightColour"), lightColour.x, lightColour.y, lightColour.z, lightColour.w);
 }
 
 void Renderer::drawLitPyramid()
