@@ -26,7 +26,7 @@ out vec3 crntPos;
 
 // Imports the camera matrix from the main function
 uniform mat4 camMatrix;
-uniform mat3 model;
+uniform mat4 model;
 
 
 

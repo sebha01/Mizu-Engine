@@ -318,7 +318,7 @@ void Renderer::setUpDiffuseObject()
 
 
 	//Light stuff
-	lightShader = Shader(diffuseLightVertexShaderPath, diffuseLightFragmentShaderPath);
+	lightShader = Shader(defaultLightVertexShaderPath, defaultLightFragmentShaderPath);
 	lightVAO.Create();
 	lightVAO.Bind();
 	lightVBO = VBO(lightVertices, sizeof(lightVertices));

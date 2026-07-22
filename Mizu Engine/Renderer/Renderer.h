@@ -117,8 +117,6 @@ class Renderer
 		//light shader
 		const char* defaultLightVertexShaderPath = "../../../Resources/Shaders/defaultLightShader.vert";
 		const char* defaultLightFragmentShaderPath = "../../../Resources/Shaders/defaultLightShader.frag";
-		const char* diffuseLightVertexShaderPath = "../../../Resources/Shaders/diffuseLightShader.vert";
-		const char* diffuseLightFragmentShaderPath = "../../../Resources/Shaders/diffuseLightShader.frag";
 		
 		VAO lightVAO;
 		VBO lightVBO;
