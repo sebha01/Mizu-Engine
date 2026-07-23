@@ -236,13 +236,8 @@ class Renderer
 		void drawPyramid();
 		void deletePyramid();
 
-		//pyramid with lightShader
+		//diffuse Light Object
 		void setUpLitPyramid();
 		void drawLitPyramid();
 		void deleteLitPyramid();
-
-		//diffuse Light Object
-		void setUpDiffuseObject();
-		void drawDiffuseObject();
-		void deleteDiffuseObject();
 };

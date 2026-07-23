@@ -251,56 +251,6 @@ void Renderer::deletePyramid()
 
 void Renderer::setUpLitPyramid()
 {
-	setUpPyramid();
-
-	//Light stuff
-	lightShader = Shader(defaultLightVertexShaderPath, defaultLightFragmentShaderPath);
-	lightVAO.Create();
-	lightVAO.Bind();
-	lightVBO = VBO(lightVertices, sizeof(lightVertices));
-	lightEBO = EBO(lightIndices, sizeof(lightIndices));
-
-	lightVAO.LinkAttrib(lightVBO, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
-
-	lightVAO.Unbind();
-	lightVBO.Unbind();
-	lightEBO.Unbind();
-
-	glm::vec4 lightColour = glm::vec4(red.r, red.g, red.b, red.a);
-
-	lightModel = glm::translate(lightModel, lightPos);
-	pyramidModel = glm::translate(pyramidModel, pyramidPos);
-
-	lightShader.Activate();
-	glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
-	glUniform4f(glGetUniformLocation(lightShader.ID, "lightColour"), lightColour.x, lightColour.y, lightColour.z, lightColour.w);
-	defaultShaderProgram.Activate();
-	glUniformMatrix4fv(glGetUniformLocation(defaultShaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
-	glUniform4f(glGetUniformLocation(defaultShaderProgram.ID, "lightColour"), lightColour.x, lightColour.y, lightColour.z, lightColour.w);
-}
-
-void Renderer::drawLitPyramid()
-{
-	//Begin drawing process for 3D pyramid
-	beginDrawProcess(&limeStoneCliffsTexture);
-
-	//Draw the triangle using GL_TRIANGLES primitive
-	glDrawElements(GL_TRIANGLES, sizeof(pyramidIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
-
-	lightShader.Activate();
-	camera.Matrix(lightShader, "camMatrix");
-	lightVAO.Bind();
-	glDrawElements(GL_TRIANGLES, sizeof(lightIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
-}
-
-void Renderer::deleteLitPyramid()
-{
-	//Delete all objects, textures and shader program associated with the pyramid object
-	deleteObjectsTexturesAndShaderProgram(&limeStoneCliffsTexture, true);
-}
-
-void Renderer::setUpDiffuseObject()
-{
 	//Set up objects and shader program to render the 3D pyramid
 	setUpObjectsAndShaderProgram(litVertex3DShaderPath, litFragment3DShaderPath, diffuseObjectVertices, sizeof(diffuseObjectVertices), diffuseObjectIndices, sizeof(diffuseObjectIndices), true);
 
@@ -319,18 +269,21 @@ void Renderer::setUpDiffuseObject()
 
 	//Light stuff
 	lightShader = Shader(defaultLightVertexShaderPath, defaultLightFragmentShaderPath);
+	// Generates Vertex Array Object and binds it
 	lightVAO.Create();
 	lightVAO.Bind();
+	// Generates Vertex Buffer Object and links it to vertices
 	lightVBO = VBO(lightVertices, sizeof(lightVertices));
+	// Generates Element Buffer Object and links it to indices
 	lightEBO = EBO(lightIndices, sizeof(lightIndices));
-
+	// Links VBO attributes such as coordinates and colors to VAO
 	lightVAO.LinkAttrib(lightVBO, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
-
+	// Unbind all to prevent accidentally modifying them
 	lightVAO.Unbind();
 	lightVBO.Unbind();
 	lightEBO.Unbind();
 
-	glm::vec4 lightColour = glm::vec4(red.r, red.g, red.b, red.a);
+	glm::vec4 lightColour = glm::vec4(white.r, white.g, white.b, white.a);
 
 	lightModel = glm::translate(lightModel, lightPos);
 	pyramidModel = glm::translate(pyramidModel, pyramidPos);
@@ -344,21 +297,32 @@ void Renderer::setUpDiffuseObject()
 	glUniform3f(glGetUniformLocation(defaultShaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 }
 
-void Renderer::drawDiffuseObject()
+void Renderer::drawLitPyramid()
 {
+	// Tells OpenGL which Shader Program we want to use
+	defaultShaderProgram.Activate();
+	// Exports the camera Position to the Fragment Shader for specular lighting
+	glUniform3f(glGetUniformLocation(defaultShaderProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
+	// Export the camMatrix to the Vertex Shader of the pyramid
+	camera.Matrix(defaultShaderProgram, "camMatrix");
+
 	//Begin drawing process for 3D pyramid
 	beginDrawProcess(&limeStoneCliffsTexture);
 
 	//Draw the triangle using GL_TRIANGLES primitive
 	glDrawElements(GL_TRIANGLES, sizeof(diffuseObjectIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
 
+	// Tells OpenGL which Shader Program we want to use
 	lightShader.Activate();
+	// Export the camMatrix to the Vertex Shader of the light cube
 	camera.Matrix(lightShader, "camMatrix");
+	// Bind the VAO so OpenGL knows to use it
 	lightVAO.Bind();
+	// Draw primitives, number of indices, datatype of indices, index of indices
 	glDrawElements(GL_TRIANGLES, sizeof(lightIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
 }
 
-void Renderer::deleteDiffuseObject()
+void Renderer::deleteLitPyramid()
 {
 	//Delete all objects, textures and shader program associated with the pyramid object
 	deleteObjectsTexturesAndShaderProgram(&limeStoneCliffsTexture, true);
