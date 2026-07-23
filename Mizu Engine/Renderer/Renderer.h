@@ -80,6 +80,9 @@ class Renderer
 		//3D shaders
 		const char* defaultVertex3DShaderPath = "../../../Resources/Shaders/default3DShader.vert";
 		const char* defaultFragment3DShaderPath = "../../../Resources/Shaders/default3DShader.frag";
+		//Diffuse shader
+		const char* litVertex3DShaderPath = "../../../Resources/Shaders/lit3DShader.vert";
+		const char* litFragment3DShaderPath = "../../../Resources/Shaders/lit3DShader.frag";
 
 		Texture floorTexture;
 		Texture limeStoneCliffsTexture;
@@ -107,6 +110,89 @@ class Renderer
 		};
 
 		Camera camera;
+
+		//Lights
+
+		Shader lightShader;
+		//light shader
+		const char* defaultLightVertexShaderPath = "../../../Resources/Shaders/Light.vert";
+		const char* defaultLightFragmentShaderPath = "../../../Resources/Shaders/Light.frag";
+		
+		VAO lightVAO;
+		VBO lightVBO;
+		EBO lightEBO;
+
+
+		GLfloat lightVertices[24] =
+		{ //     COORDINATES     //
+			-0.1f, -0.1f,  0.1f,
+			-0.1f, -0.1f, -0.1f,
+			 0.1f, -0.1f, -0.1f,
+			 0.1f, -0.1f,  0.1f,
+			-0.1f,  0.1f,  0.1f,
+			-0.1f,  0.1f, -0.1f,
+			 0.1f,  0.1f, -0.1f,
+			 0.1f,  0.1f,  0.1f
+		};
+
+		GLuint lightIndices[36] =
+		{
+			0, 1, 2,
+			0, 2, 3,
+			0, 4, 7,
+			0, 7, 3,
+			3, 7, 6,
+			3, 6, 2,
+			2, 6, 5,
+			2, 5, 1,
+			1, 5, 4,
+			1, 4, 0,
+			4, 5, 6,
+			4, 6, 7
+		};
+
+		glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
+		glm::mat4 lightModel = glm::mat4(1.0f);
+
+		glm::vec3 pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::mat4 pyramidModel = glm::mat4(1.0f);
+
+		// Vertices coordinates
+		GLfloat diffuseObjectVertices[192] =
+		{ //     COORDINATES     /        COLORS								/    TexCoord   /        NORMALS       //
+			-0.5f, 0.0f,  0.5f,     red.r,    red.g,    red.b,    red.a, 			0.0f, 0.0f,      0.0f, -1.0f, 0.0f, // Bottom side
+			-0.5f, 0.0f, -0.5f,     blue.r,   blue.g,   blue.b,   blue.a,			0.0f, 5.0f,      0.0f, -1.0f, 0.0f, // Bottom side
+			 0.5f, 0.0f, -0.5f,     green.r,  green.g,  green.b,  green.a,			5.0f, 5.0f,      0.0f, -1.0f, 0.0f, // Bottom side
+			 0.5f, 0.0f,  0.5f,     purple.r, purple.g, purple.b, purple.a,			5.0f, 0.0f,      0.0f, -1.0f, 0.0f, // Bottom side
+
+			-0.5f, 0.0f,  0.5f,     red.r,    red.g,    red.b,    red.a, 			0.0f, 0.0f,     -0.8f, 0.5f,  0.0f, // Left Side
+			-0.5f, 0.0f, -0.5f,     blue.r,   blue.g,   blue.b,   blue.a,			5.0f, 0.0f,     -0.8f, 0.5f,  0.0f, // Left Side
+			 0.0f, 0.8f,  0.0f,     green.r,  green.g,  green.b,  green.a,			2.5f, 5.0f,     -0.8f, 0.5f,  0.0f, // Left Side
+
+			-0.5f, 0.0f, -0.5f,     purple.r, purple.g, purple.b, purple.a,			5.0f, 0.0f,      0.0f, 0.5f, -0.8f, // Non-facing side
+			 0.5f, 0.0f, -0.5f,     red.r,    red.g,    red.b,    red.a, 			0.0f, 0.0f,      0.0f, 0.5f, -0.8f, // Non-facing side
+			 0.0f, 0.8f,  0.0f,     blue.r,   blue.g,   blue.b,   blue.a,			2.5f, 5.0f,      0.0f, 0.5f, -0.8f, // Non-facing side
+
+			 0.5f, 0.0f, -0.5f,     green.r,  green.g,  green.b,  green.a,			0.0f, 0.0f,      0.8f, 0.5f,  0.0f, // Right side
+			 0.5f, 0.0f,  0.5f,     purple.r, purple.g, purple.b, purple.a,			5.0f, 0.0f,      0.8f, 0.5f,  0.0f, // Right side
+			 0.0f, 0.8f,  0.0f,     red.r,    red.g,    red.b,    red.a,			2.5f, 5.0f,      0.8f, 0.5f,  0.0f, // Right side
+
+			 0.5f, 0.0f,  0.5f,     blue.r,   blue.g,   blue.b,   blue.a,			5.0f, 0.0f,      0.0f, 0.5f,  0.8f, // Facing side
+			-0.5f, 0.0f,  0.5f,     green.r,  green.g,  green.b,  green.a,		 	0.0f, 0.0f,      0.0f, 0.5f,  0.8f, // Facing side
+			 0.0f, 0.8f,  0.0f,     purple.r, purple.g, purple.b, purple.a,			2.5f, 5.0f,      0.0f, 0.5f,  0.8f  // Facing side
+		};
+
+		// Indices for vertices order
+		GLuint diffuseObjectIndices[18] =
+		{
+			0, 1, 2, // Bottom side
+			0, 2, 3, // Bottom side
+			4, 6, 5, // Left side
+			7, 9, 8, // Non-facing side
+			10, 12, 11, // Right side
+			13, 15, 14 // Facing side
+		};
+
 		
 	public:
 		//Constructor and Destructor
@@ -149,4 +235,9 @@ class Renderer
 		void setUpPyramid();
 		void drawPyramid();
 		void deletePyramid();
+
+		//diffuse Light Object
+		void setUpLitPyramid();
+		void drawLitPyramid();
+		void deleteLitPyramid();
 };
