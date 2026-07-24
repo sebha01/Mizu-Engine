@@ -193,6 +193,20 @@ class Renderer
 			13, 15, 14 // Facing side
 		};
 
+		// Vertices coordinates
+		GLfloat speclarMapVertices[48] =
+		{ //     COORDINATES		/        COLORS			/    TexCoord    /       NORMALS     //
+			-1.0f, 0.0f,  1.0f,		0.0f, 0.0f, 0.0f, 0.0f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,
+			-1.0f, 0.0f, -1.0f,		0.0f, 0.0f, 0.0f, 0.0f,		0.0f, 1.0f,		0.0f, 1.0f, 0.0f,
+			 1.0f, 0.0f, -1.0f,		0.0f, 0.0f, 0.0f, 0.0f,		1.0f, 1.0f,		0.0f, 1.0f, 0.0f,
+			 1.0f, 0.0f,  1.0f,		0.0f, 0.0f, 0.0f, 0.0f,		1.0f, 0.0f,		0.0f, 1.0f, 0.0f
+		};
+		// Indices for vertices order
+		GLuint specularMapIndices[6] =
+		{
+			0, 1, 2,
+			0, 2, 3
+		};
 		
 	public:
 		//Constructor and Destructor

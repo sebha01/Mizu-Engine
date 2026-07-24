@@ -14,8 +14,9 @@ class Texture
 		//Type of texture
 		GLenum type;
 		//Default constructor
+		GLuint unit;
 		Texture();
-		Texture(const char* image, GLenum texType, GLenum slot, GLenum format, GLenum pixelType);
+		Texture(const char* image, GLenum texType, GLuint slot, GLenum format, GLenum pixelType);
 
 		//Assigns texture unit to texture
 		void texUnit(Shader& shader, const char* uniform, GLuint unit);
